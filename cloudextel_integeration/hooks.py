@@ -92,6 +92,25 @@ app_license = "MIT"
 doc_events = {
 	"Supplier":{
 		"on_update": "cloudextel_integeration.integeration.supplier"
+	},
+	"Customer":{
+		"on_update": "cloudextel_integeration.integeration.customer"
+	},
+	"Address":{
+		"on_update": "cloudextel_integeration.integeration.address_and_contact"
+	},
+	"Contact":{
+		"on_update": "cloudextel_integeration.integeration.address_and_contact"
+	},
+	"Sales Order":{
+		"on_submit": "cloudextel_integeration.integeration.create_sales_order",
+		"on_cancel": "cloudextel_integeration.integeration.cancel_sales_order"
+	},
+	"Purchase Order":{
+		"on_submit": "cloudextel_integeration.integeration.create_purchase_order",
+	},
+	"Item":{
+		"on_update": "cloudextel_integeration.integeration.item"
 	}
 # 	"*": {
 # 		"on_update": "method",

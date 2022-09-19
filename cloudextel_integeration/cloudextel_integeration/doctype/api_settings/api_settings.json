@@ -6,19 +6,76 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "api_key"
+  "section_break_1",
+  "api_key",
+  "column_break_3",
+  "url",
+  "section_break_5",
+  "supplier",
+  "customer",
+  "item",
+  "purchase_order",
+  "sales_order",
+  "cancel_sales_order"
  ],
  "fields": [
   {
    "fieldname": "api_key",
    "fieldtype": "Data",
    "label": "API Key"
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "url",
+   "fieldtype": "Data",
+   "label": "URl"
+  },
+  {
+   "fieldname": "section_break_5",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Data",
+   "label": "Supplier"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Data",
+   "label": "Customer"
+  },
+  {
+   "fieldname": "purchase_order",
+   "fieldtype": "Data",
+   "label": "Purchase Order"
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Data",
+   "label": "Sales Order"
+  },
+  {
+   "fieldname": "cancel_sales_order",
+   "fieldtype": "Data",
+   "label": "Cancel Sales Order"
+  },
+  {
+   "fieldname": "item",
+   "fieldtype": "Data",
+   "label": "Item"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-09-10 16:19:23.064787",
+ "modified": "2022-09-17 00:14:39.945069",
  "modified_by": "Administrator",
  "module": "Cloudextel Integeration",
  "name": "Api Settings",
