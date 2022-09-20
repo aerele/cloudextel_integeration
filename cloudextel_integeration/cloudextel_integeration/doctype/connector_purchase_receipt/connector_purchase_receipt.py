@@ -6,36 +6,43 @@ from frappe.model.document import Document
 from erpnext.buying.doctype.purchase_order.purchase_order import make_purchase_receipt
 class ConnectorPurchaseReceipt(Document):
 	pass
+
+
+
 @frappe.whitelist()
-def create_purchasereceipt():
+def create_purchase_receipt():
 	orders = frappe.db.sql("""select name  from `tabConnector Purchase Receipt` where  is_synced =0 and retry_limit>0 order by creation desc limit 20""",as_dict=1)
 	for purchase_receipt_id in orders:
-		new_purchasereceipt(purchase_receipt_id["name"])
+		try:
+			new_purchasereceipt(purchase_receipt_id.name)
+		except:
+			pass
+
+
 @frappe.whitelist()
 def new_purchasereceipt(purchase_receipt_id):
-	c_purchase_receipt=frappe.get_doc("Connector Purchase Receipt",purchase_receipt_id)
-	reference=frappe.db.sql("""select count(reference_no) from `tabPurchase Receipt` where reference_no= %s """,(c_purchase_receipt.reference_no),as_list=1)
-	if reference[0][0]==0:
-		frappe.db.sql("""update `tabConnector Purchase Receipt` set retry_limit=retry_limit-1 where name= %s """,(purchase_receipt_id))
-		purchase_receipt=make_purchase_receipt(c_purchase_receipt.purchase_order_no)
-		c_item = {}
-		p_item=[]
-		for i in c_purchase_receipt.items:
-			c_item[i.item_code] = i
-		for item in (purchase_receipt.items):
-			if	item.item_code in c_item:
-				c_it = c_item[item.item_code]
-				item.received_stock_qty= c_it.received_stock_qty
-				item.stock_qty=c_it.stock_qty
-				item.returned_qty=c_it.returned_qty
-				p_item.append(item)
-		purchase_receipt.items=p_item
-		try:
-			purchase_receipt.save(ignore_permissions=True)
-			frappe.db.sql("""update `tabPurchase Receipt` set reference_no= %s where name= %s""",(c_purchase_receipt.reference_no,purchase_receipt.name))
-			frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1 where name= %s""",(c_purchase_receipt.name))
-			
-		except Exception as e:
-			frappe.errprint(e)
-	
-	
+	pr_doc = frappe.get_doc("Connector Purchase Receipt",purchase_receipt_id)
+	reference = frappe.db.get_value("Purchase Receipt", {"reference_no":pr_doc.reference_no, "docstatus":1})
+	if reference:
+		frappe.throw("Reference No already exists")
+	frappe.db.sql("""update `tabConnector Purchase Receipt` set retry_limit=retry_limit-1 where name= %s """,(purchase_receipt_id))
+	purchase_receipt=make_purchase_receipt(pr_doc.purchase_order_no)
+	purchase_receipt.reference_no = pr_doc.reference_no
+	c_item = {}
+	p_item=[]
+	for i in pr_doc.items:
+		c_item[i.item_code] = i
+	for item in (purchase_receipt.items):
+		if	item.item_code in c_item:
+			c_it = c_item[item.item_code]
+			item.received_stock_qty= c_it.received_stock_qty
+			item.stock_qty=c_it.stock_qty
+			item.returned_qty=c_it.returned_qty
+			p_item.append(item)
+	purchase_receipt.items=p_item
+	try:
+		purchase_receipt.save(ignore_permissions=True)
+		frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1 where name= %s""",(pr_doc.name))
+		frappe.db.commit()
+	except Exception as e:
+		frappe.errprint(e)

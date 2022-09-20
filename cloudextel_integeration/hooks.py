@@ -140,6 +140,15 @@ doc_events = {
 # 	]
 # }
 
+scheduler_events = {
+	"cron": {
+		"*/1 * * * *": [
+			"cloudextel_integeration.cloudextel_integeration.doctype.connector_delivery_note.connector_delivery_note.create_delivery_note",
+			"cloudextel_integeration.cloudextel_integeration.doctype.connector_purchase_receipt.connector_purchase_receipt.create_purchase_receipt"
+		]
+	}
+}
+
 # Testing
 # -------
 
