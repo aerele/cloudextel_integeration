@@ -90,9 +90,34 @@ app_license = "MIT"
 # Hook on document methods and events
 
 doc_events = {
+<<<<<<< HEAD
 	# "Supplier":{
 	# 	"on_update": "cloudextel_integeration.integeration.supplier"
 	# }
+=======
+	"Supplier":{
+		"on_update": "cloudextel_integeration.integeration.supplier"
+	},
+	"Customer":{
+		"on_update": "cloudextel_integeration.integeration.customer"
+	},
+	"Address":{
+		"on_update": "cloudextel_integeration.integeration.address_and_contact"
+	},
+	"Contact":{
+		"on_update": "cloudextel_integeration.integeration.address_and_contact"
+	},
+	"Sales Order":{
+		"on_submit": "cloudextel_integeration.integeration.create_sales_order",
+		"on_cancel": "cloudextel_integeration.integeration.cancel_sales_order"
+	},
+	"Purchase Order":{
+		"on_submit": "cloudextel_integeration.integeration.create_purchase_order",
+	},
+	"Item":{
+		"on_update": "cloudextel_integeration.integeration.item"
+	}
+>>>>>>> cb40720bdb9df8a3b633c6aa85a98d50c1233a78
 # 	"*": {
 # 		"on_update": "method",
 # 		"on_cancel": "method",

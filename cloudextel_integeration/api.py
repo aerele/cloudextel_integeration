@@ -42,3 +42,7 @@ def create_stock_entry(args):
 		return doc.name
 	except Exception as e:
 		raise Exception("Please try again later")
+
+
+def get_status(doctype, name):
+	return frappe.db.get_value(doctype, {"reference_no": name}, "workflow_state") or ''
