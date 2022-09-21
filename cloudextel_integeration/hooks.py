@@ -58,7 +58,7 @@ app_license = "MIT"
 
 # before_install = "cloudextel_integeration.install.before_install"
 # after_install = "cloudextel_integeration.install.after_install"
-
+after_install = "cloudextel_integeration.install.after_install"
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
