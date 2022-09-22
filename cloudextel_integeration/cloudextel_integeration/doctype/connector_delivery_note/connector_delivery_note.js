@@ -9,9 +9,9 @@ frappe.ui.form.on('Connector Delivery Note', {
 				return
 			}
 			frappe.call({
-				'method': 'cloudextel_integeration.cloudextel_integeration.doctype.connector_delivery_note.connector_delivery_note.create_delivery_note',
+				'method': 'cloudextel_integeration.cloudextel_integeration.doctype.connector_delivery_note.connector_delivery_note.new_delivery_note',
 				'args':{
-				'delivery_note_id': frm.doc.name
+					'delivery_note_id': frm.doc.name
 				},
 				'callback':function(res){
 					if(res.message){

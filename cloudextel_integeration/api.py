@@ -37,6 +37,7 @@ def create_stock_entry(args):
 		args['doctype'] = 'Connector Stock Entry'
 		args['status'] = 'Pending'
 		args['sync'] = 0
+		args['stock_entry_type'] = "Material Transfer"
 		doc = frappe.get_doc(args)
 		doc.save()
 		return doc.name

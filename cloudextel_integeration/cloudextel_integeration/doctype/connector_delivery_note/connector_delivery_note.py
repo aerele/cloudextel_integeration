@@ -25,8 +25,12 @@ def new_delivery_note(delivery_note_id):
 	if reference:
 		frappe.throw("Reference No already exists")
 	frappe.db.sql("""update `tabConnector Delivery Note` set retry_limit=retry_limit-1 where name= %s """,(delivery_note_id))
+	submit_dn = frappe.db.get_value("Api Settings", "Api Settings", 'submit_delivery_note')
 	delivery_note=make_delivery_note(dn_doc.purchase_order_no)
 	delivery_note.reference_no = dn_doc.reference_no
+	delivery_note.set_posting_time = 1
+	delivery_note.posting_time = dn_doc.posting_time
+	delivery_note.posting_date = dn_doc.posting_date
 	c_item = {}
 	p_item=[]
 	for i in dn_doc.items:
@@ -43,5 +47,10 @@ def new_delivery_note(delivery_note_id):
 		delivery_note.save(ignore_permissions=True)
 		frappe.db.sql("""update `tabConnector Delivery Note` set is_synced= 1 where name= %s""",(dn_doc.name))
 		frappe.db.commit()
+		if submit_dn == 'Yes':
+			delivery_note.submit()
+		frappe.db.commit()
+		return True
 	except Exception as e:
 		frappe.errprint(e)
+		return False

@@ -26,8 +26,12 @@ def new_purchasereceipt(purchase_receipt_id):
 	if reference:
 		frappe.throw("Reference No already exists")
 	frappe.db.sql("""update `tabConnector Purchase Receipt` set retry_limit=retry_limit-1 where name= %s """,(purchase_receipt_id))
+	submit_pr = frappe.db.get_value("Api Settings", "Api Settings", 'submit_delivery_note')
 	purchase_receipt=make_purchase_receipt(pr_doc.purchase_order_no)
 	purchase_receipt.reference_no = pr_doc.reference_no
+	purchase_receipt.set_posting_time = 1
+	purchase_receipt.posting_time = pr_doc.posting_time
+	purchase_receipt.posting_date = pr_doc.posting_date
 	c_item = {}
 	p_item=[]
 	for i in pr_doc.items:
@@ -44,5 +48,10 @@ def new_purchasereceipt(purchase_receipt_id):
 		purchase_receipt.save(ignore_permissions=True)
 		frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1 where name= %s""",(pr_doc.name))
 		frappe.db.commit()
+		if submit_pr == 'Yes':
+			purchase_receipt.submit()
+		frappe.db.commit()
+		return True
 	except Exception as e:
 		frappe.errprint(e)
+		return False

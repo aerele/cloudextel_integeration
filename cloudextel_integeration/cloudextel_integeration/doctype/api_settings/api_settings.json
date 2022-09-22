@@ -14,9 +14,14 @@
   "supplier",
   "customer",
   "item",
+  "column_break_9",
   "purchase_order",
   "sales_order",
-  "cancel_sales_order"
+  "cancel_sales_order",
+  "section_break_13",
+  "submit_purchase_receipt",
+  "submit_delivery_note",
+  "submit_stock_entry"
  ],
  "fields": [
   {
@@ -70,12 +75,38 @@
    "fieldname": "item",
    "fieldtype": "Data",
    "label": "Item"
+  },
+  {
+   "fieldname": "column_break_9",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_13",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "submit_purchase_receipt",
+   "fieldtype": "Select",
+   "label": "Submit Purchase Receipt",
+   "options": "No\nYes"
+  },
+  {
+   "fieldname": "submit_delivery_note",
+   "fieldtype": "Select",
+   "label": "Submit Delivery Note",
+   "options": "No\nYes"
+  },
+  {
+   "fieldname": "submit_stock_entry",
+   "fieldtype": "Select",
+   "label": "Submit Stock Entry",
+   "options": "No\nYes"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2022-09-17 00:14:39.945069",
+ "modified": "2022-09-22 22:23:31.763837",
  "modified_by": "Administrator",
  "module": "Cloudextel Integeration",
  "name": "Api Settings",

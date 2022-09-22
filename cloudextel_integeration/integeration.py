@@ -141,7 +141,7 @@ def create_sales_order(self, method):
 	payload = frappe._dict({
 		  "key": key,
 		  "customer_code":self.customer ,
-		  "warehouse_booking_id": 225,
+		  "warehouse_booking_id": frappe.db.get_value("Warehouse", self.set_warehouse, 'odwen_warehouse_id') or '',
 		  "erpnext_ref_id": self.name,
 		  "comment":"",
 		  "invoice_no":self.name,
@@ -171,7 +171,7 @@ def create_purchase_order(self, method):
 	payload = frappe._dict({
 	  "key": key,
 	  "vendor_code": self.supplier,
-	  "warehouse_booking_id": 225,
+	  "warehouse_booking_id": frappe.db.get_value("Warehouse", self.set_warehouse, 'odwen_warehouse_id') or '',
 	  "erpnext_ref_id": self.name,
 	  "comment":"",
 	  "invoice_no": self.name,

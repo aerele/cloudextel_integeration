@@ -11,7 +11,7 @@ frappe.ui.form.on('Connector Purchase Receipt', {
 			frappe.call({
 				'method': 'cloudextel_integeration.cloudextel_integeration.doctype.connector_purchase_receipt.connector_purchase_receipt.new_purchase_receipt',
 				'args':{
-				'purchase_receipt_id': frm.doc.name
+					'purchase_receipt_id': frm.doc.name
 				},
 				'callback':function(res){
 					if(res.message){

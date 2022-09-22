@@ -58,7 +58,7 @@ app_license = "MIT"
 
 # before_install = "cloudextel_integeration.install.before_install"
 # after_install = "cloudextel_integeration.install.after_install"
-after_install = "cloudextel_integeration.install.after_install"
+after_migrate = ["cloudextel_integeration.install.after_install"]
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
@@ -144,6 +144,7 @@ scheduler_events = {
 	"cron": {
 		"*/1 * * * *": [
 			"cloudextel_integeration.cloudextel_integeration.doctype.connector_delivery_note.connector_delivery_note.create_delivery_note",
+			"cloudextel_integeration.cloudextel_integeration.doctype.connector_stock_entry.connector_stock_entry.create_stock_entry",
 			"cloudextel_integeration.cloudextel_integeration.doctype.connector_purchase_receipt.connector_purchase_receipt.create_purchase_receipt"
 		]
 	}
