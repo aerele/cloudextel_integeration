@@ -215,7 +215,7 @@ def cancel_sales_order(self, method):
 def item(self, method):
 	key = get_api_key()
 	url = get_url()
-	item_path = frappe.db.get_value("Api Settings", "Api Settings", "supplier")
+	item_path = frappe.db.get_value("Api Settings", "Api Settings", "item")
 	if not item_path:
 		frappe.throw("Add api item endpoint in {0}".format(frappe.utils.get_link_to_form(doctype="Api Settings", name="", label="Api Settings")))
 	url += item_path
