@@ -90,7 +90,7 @@ def customer(self, method):
 		"Content-Type":"application/json"
 	}
 	if self.customer_primary_contact:
-		contact = frappe.get_doc("Contact", self.supplier_primary_contact)
+		contact = frappe.get_doc("Contact", self.customer_primary_contact)
 		for i in contact.email_ids:
 			if  i.is_primary:
 				payload.email = i.email_id
