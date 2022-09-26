@@ -226,6 +226,7 @@ def item(self, method):
 			"item_category": self.item_group,
 			"picking_rule_apply":"yes" if self.has_batch_no else 'no',
 			"gst_number":"",
+			"hsn_code": self.gst_hsn_code,
 			"unit_of_measurement": self.stock_uom,
 			"shelf_life":"",
 			"brand_name":"",
