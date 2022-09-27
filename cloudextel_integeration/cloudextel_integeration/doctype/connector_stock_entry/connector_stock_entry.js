@@ -4,7 +4,7 @@
 frappe.ui.form.on('Connector Stock Entry', {
 	refresh:function(frm){
 		frm.add_custom_button(__("Create Stock Entry"), function(){
-			if(frm.doc.sync == 1){
+			if(frm.doc.is_synced == 1){
 				frappe.msgprint('Stock Entry Already Created')
 				return
 			}

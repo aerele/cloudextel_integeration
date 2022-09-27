@@ -42,6 +42,7 @@ def new_delivery_note(delivery_note_id):
 			p_item.append(item)
 	delivery_note.items=p_item
 	try:
+		frappe.errprint(delivery_note)
 		delivery_note.save(ignore_permissions=True)
 		frappe.db.sql("""update `tabConnector Delivery Note` set is_synced= 1 where name= %s""",(dn_doc.name))
 		frappe.db.commit()

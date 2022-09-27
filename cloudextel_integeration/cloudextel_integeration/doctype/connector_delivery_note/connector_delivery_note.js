@@ -4,7 +4,7 @@
 frappe.ui.form.on('Connector Delivery Note', {
 	refresh:function(frm){
 		frm.add_custom_button(__("Create Delivery Note"), function(){
-			if(frm.doc.sync == 1){
+			if(frm.doc.is_synced == 1){
 				frappe.msgprint('Delivery Note Already Created')
 				return
 			}

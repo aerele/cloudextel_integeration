@@ -16,6 +16,7 @@
   "reference_no",
   "retry_limit",
   "purchase_order_no",
+  "status",
   "column_break1",
   "company",
   "posting_date",
@@ -970,11 +971,16 @@
    "fieldname": "is_synced",
    "fieldtype": "Check",
    "label": "Is Synced"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "label": "Status"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2022-09-06 12:20:07.703978",
+ "modified": "2022-09-28 01:02:04.031683",
  "modified_by": "Administrator",
  "module": "Cloudextel Integeration",
  "name": "Connector Purchase Receipt",
