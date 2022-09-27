@@ -36,9 +36,11 @@ def new_delivery_note(delivery_note_id):
 	for i in dn_doc.items:
 		c_item[i.item_code] = i
 	for item in (delivery_note.items):
-		if	item.item_code in c_item:
+		if item.item_code in c_item:
+			so_item_doc = frappe.get_doc("Sales Order Items", {"item_code": item.item_code, "parent":dn_doc.sales_order})
 			c_it = c_item[item.item_code]
 			item.qty=c_it.qty
+			item.cost_center = so_item_doc.cost_center
 			p_item.append(item)
 	delivery_note.items=p_item
 	try:
