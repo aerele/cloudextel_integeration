@@ -145,8 +145,8 @@ def create_sales_order(self, method):
 		  "erpnext_ref_id": self.name,
 		  "comment":"",
 		  "invoice_no":self.name,
-		  "invoice_date": self.transaction_date,
-		  "expected_delivery_date": self.delivery_date,
+		  "invoice_date": str(self.transaction_date),
+		  "expected_delivery_date": str(self.delivery_date),
 		  "line_items": []
 		}
 	)
@@ -175,8 +175,8 @@ def create_purchase_order(self, method):
 	  "erpnext_ref_id": self.name,
 	  "comment":"",
 	  "invoice_no": self.name,
-	  "invoice_date": self.transaction_date,
-	  "expected_delivery_date": self.schedule_date,
+	  "invoice_date": str(self.transaction_date),
+	  "expected_delivery_date": str(self.schedule_date),
 	  "line_items": []
 		}
 	)
