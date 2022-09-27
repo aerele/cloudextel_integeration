@@ -39,9 +39,9 @@ def new_purchasereceipt(purchase_receipt_id):
 	for item in (purchase_receipt.items):
 		if	item.item_code in c_item:
 			c_it = c_item[item.item_code]
-			item.received_stock_qty= c_it.received_stock_qty
-			item.stock_qty=c_it.stock_qty
-			item.returned_qty=c_it.returned_qty
+			item.received_qty= c_it.received_qty
+			item.qty=c_it.qty
+			item.rejected_qty=c_it.rejected_qty
 			p_item.append(item)
 	purchase_receipt.items=p_item
 	try:
