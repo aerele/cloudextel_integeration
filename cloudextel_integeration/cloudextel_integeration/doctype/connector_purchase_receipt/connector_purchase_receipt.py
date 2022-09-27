@@ -44,6 +44,7 @@ def new_purchasereceipt(purchase_receipt_id):
 			item.rejected_qty=c_it.rejected_qty
 			p_item.append(item)
 	purchase_receipt.items=p_item
+	purchase_receipt.rejected_warehouse = purchase_receipt.set_warehouse
 	try:
 		purchase_receipt.save(ignore_permissions=True)
 		frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1 where name= %s""",(pr_doc.name))
