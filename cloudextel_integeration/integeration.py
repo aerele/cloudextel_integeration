@@ -141,7 +141,7 @@ def create_sales_order(self, method):
 	payload = frappe._dict({
 		  "key": key,
 		  "customer_code":self.customer ,
-		  "warehouse_booking_id": frappe.db.get_value("Warehouse", self.set_warehouse, 'odwen_warehouse_id') or '',
+		  "warehouse_booking_id": '',
 		  "erpnext_ref_id": self.name,
 		  "comment":"",
 		  "invoice_no":self.name,
@@ -150,6 +150,18 @@ def create_sales_order(self, method):
 		  "line_items": []
 		}
 	)
+	if self.set_warehouse:
+		warehouse_id = frappe.db.get_value("Warehouse", self.set_warehouse, 'odwen_warehouse_id')
+		if not warehouse_id:
+			frappe.throw("Set Odwen Warehouse Id for warehouse: {0}".format(self.set_warehouse))
+		payload["warehouse_booking_id"] = warehouse_id
+	else:
+		for i in self.items:
+			if i.warehouse:
+				warehouse_id = frappe.db.get_value("Warehouse", i.warehouse, 'odwen_warehouse_id')
+				if not warehouse_id:
+					frappe.throw("Set Odwen Warehouse Id for warehouse: {0}".format(i.warehouse))
+				payload["warehouse_booking_id"] = warehouse_id
 	for i in self.items:
 		payload.line_items.append({
 			"item_code": i.item_code,
