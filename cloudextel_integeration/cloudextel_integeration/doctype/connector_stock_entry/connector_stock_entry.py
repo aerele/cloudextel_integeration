@@ -35,6 +35,7 @@ def new_stock_entry(name):
 	doc.to_warehouse = frappe.db.get_value("Warehouse", {"odwen_warehouse_id": cse.to_warehouse}, 'name') or None
 	if not doc.to_warehouse:
 		frappe.throw("Couldn't find warehouse with id "+cse.to_warehouse)
+	doc.delivery_to = doc.to_warehouse
 	doc.items = get_items(cse, doc.from_warehouse, doc.to_warehouse)
 	try:
 		doc.save(ignore_permissions=True)
@@ -57,7 +58,6 @@ def get_items(cse, from_warehouse, to_warehouse):
 			'parenttype': "Stock Entry",
 			's_warehouse': from_warehouse,
 			't_warehouse':to_warehouse,
-			'delivery_to': to_warehouse,
 			'item_code': i.item_code,
 			'qty': i.qty,
 			'uom': i.uom,
