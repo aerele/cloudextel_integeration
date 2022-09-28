@@ -57,6 +57,7 @@ def get_items(cse, from_warehouse, to_warehouse):
 			'parenttype': "Stock Entry",
 			's_warehouse': from_warehouse,
 			't_warehouse':to_warehouse,
+			'delivery_to': to_warehouse,
 			'item_code': i.item_code,
 			'qty': i.qty,
 			'uom': i.uom,
