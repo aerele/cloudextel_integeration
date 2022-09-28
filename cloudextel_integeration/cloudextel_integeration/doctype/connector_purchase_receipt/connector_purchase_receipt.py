@@ -47,7 +47,7 @@ def new_purchasereceipt(purchase_receipt_id):
 	purchase_receipt.rejected_warehouse = purchase_receipt.set_warehouse
 	try:
 		purchase_receipt.save(ignore_permissions=True)
-		frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1 where name= %s""",(pr_doc.name))
+		frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1, status='Synced' where name= %s""",(pr_doc.name))
 		frappe.db.commit()
 		if submit_pr == 'Yes':
 			purchase_receipt.submit()

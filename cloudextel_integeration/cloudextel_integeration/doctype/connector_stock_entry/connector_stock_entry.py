@@ -22,21 +22,23 @@ def new_stock_entry(name):
 	frappe.db.sql("""update `tabConnector Delivery Note` set retry_limit=retry_limit-1 where name= %s """,(name))
 	submit_se = frappe.db.get_value("Api Settings", "Api Settings", 'submit_delivery_note')
 	doc = frappe.new_doc("Stock Entry")
-	doc.stock_entry_type = cse.stock_entry_type
+	doc.company = cse.company
+	doc.stock_entry_type = "Material Transfer"
+	doc.purpose = "Material Transfer"
 	doc.set_posting_time = 1
 	doc.posting_time = cse.posting_time
 	doc.posting_date = cse.posting_date
 	doc.reference_no = cse.reference_no
-	doc.from_warehouse = frappe.db.get_value("Warehouse", cse.from_warehouse, 'odwen_warehouse_id') or None
+	doc.from_warehouse = frappe.db.get_value("Warehouse", {"odwen_warehouse_id": cse.from_warehouse}, 'name') or None
 	if not doc.from_warehouse:
 		frappe.throw("Couldn't find warehouse with id "+cse.from_warehouse)
-	doc.to_warehouse = frappe.db.get_value("Warehouse", cse.to_warehouse, 'odwen_warehouse_id') or None
+	doc.to_warehouse = frappe.db.get_value("Warehouse", {"odwen_warehouse_id": cse.to_warehouse}, 'name') or None
 	if not doc.to_warehouse:
 		frappe.throw("Couldn't find warehouse with id "+cse.to_warehouse)
 	doc.items = get_items(cse, doc.from_warehouse, doc.to_warehouse)
 	try:
 		doc.save(ignore_permissions=True)
-		frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1 where name= %s""",(cse.name))
+		frappe.db.sql("""update `tabConnector Stock Entry` set is_synced= 1, status='Synced' where name= %s""",(cse.name))
 		frappe.db.commit()
 		if submit_se == 'Yes':
 			doc.submit()
@@ -49,12 +51,18 @@ def new_stock_entry(name):
 def get_items(cse, from_warehouse, to_warehouse):
 	items = []
 	for i in cse.items:
-		items.append({
+		items.append(frappe.get_doc({
+			'doctype': "Stock Entry Detail",
+			'parentfield':"items",
+			'parenttype': "Stock Entry",
 			's_warehouse': from_warehouse,
 			't_warehouse':to_warehouse,
 			'item_code': i.item_code,
 			'qty': i.qty,
-			'uom': i.uom
-		})
+			'uom': i.uom,
+			'conversion_factor': 1,
+			'basic_amount': 0
+		}))
+	return items
 class ConnectorStockEntry(Document):
 	pass
