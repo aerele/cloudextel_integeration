@@ -44,7 +44,7 @@ def get_data(filters):
 				status_map[i]+"_avg_days": 0
 			}
 		)
-	raw = frappe.db.get_list(filters.doctype, {"creation":[">", from_date], "creation":["<", to_date    ]}, order_by='creation')
+	raw = frappe.db.sql("""select distinct name from `tab{0}` where creation>'{1}' and creation<'{2}'""".format(filters.doctype, from_date, to_date), as_dict=1)
 	for i in raw:
 		doc = frappe.get_doc(filters.doctype, i.name)
 		if doc.workflow_state not in status_map:
