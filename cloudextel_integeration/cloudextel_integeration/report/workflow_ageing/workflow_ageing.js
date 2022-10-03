@@ -19,7 +19,7 @@ frappe.query_reports["Workflow Ageing"] = {
 			"reqd": 1,
 			"get_query" : function(){
 				return {
-					"query": "erpnext.stock.report.workflow_ageing.workflow_ageing.get_workflow_doctype",
+					"query": "cloudextel_integeration.cloudextel_integeration.report.workflow_ageing.workflow_ageing.get_workflow_doctype",
 				}
 			}
 		},
