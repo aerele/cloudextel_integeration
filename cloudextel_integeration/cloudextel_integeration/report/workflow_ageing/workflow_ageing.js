@@ -14,27 +14,57 @@ frappe.query_reports["Workflow Ageing"] = {
 		{
 			"fieldname": "doctype",
 			"label": "Doctype",
-			"fieldtype": "Link",
-			"options": "DocType",
+			"fieldtype": "Select",
+			"options": ["Purchase Order", "Purchase Invoice", "Purchase Receipt", "Payment Entry", "Sales Order", "Sales Invoice", "Delivery Note"],
 			"reqd": 1,
-			"get_query" : function(){
-				return {
-					"query": "cloudextel_integeration.cloudextel_integeration.report.workflow_ageing.workflow_ageing.get_workflow_doctype",
-				}
-			}
+			// "get_query" : function(){
+			// 	return {
+			// 		"query": "cloudextel_integeration.cloudextel_integeration.report.workflow_ageing.workflow_ageing.get_workflow_doctype",
+			// 	}
+			// }
 		},
-		// {
-		// 	"fieldname": "cost_center",
-		// 	"label": "Cost Center",
-		// 	"fieldtype": "Link",
-		// 	"options": "Cost Center",
-		// },
-		// {
-		// 	"fieldname": "telecom_circle",
-		// 	"label": "Telecom Circle",
-		// 	"fieldtype": "Select",
-		// 	"options": "Telecom Circle",
-		// },
+		{
+			"fieldname": "tat_limit",
+			"label": "TAT Limit",
+			"fieldtype": "Int",
+			"default": 3,
+			"reqd": 1
+		},
+		{
+			"fieldname": "cost_center",
+			"label": "Cost Center",
+			"fieldtype": "Link",
+			"options": "Cost Center",
+			"reqd": 1
+		},
+		{
+			"fieldname": "telecom_circle",
+			"label": "Telecom Circle",
+			"fieldtype": "Select",
+			"options": "Telecom Circle",
+			"reqd": 1
+		},
+		{
+			"fieldname": "age1",
+			"label": "Age 1",
+			"fieldtype": "Int",
+			"default": 5,
+			"reqd": 1
+		},
+		{
+			"fieldname": "age2",
+			"label": "Age 2",
+			"fieldtype": "Int",
+			"default": 10,
+			"reqd": 1
+		},
+		{
+			"fieldname": "age3",
+			"label": "Age 3",
+			"fieldtype": "Int",
+			"default": 15,
+			"reqd": 1
+		}
 		// {
 		// 	"fieldname": "role",
 		// 	"label": "Role",
