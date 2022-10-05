@@ -15,7 +15,7 @@ frappe.query_reports["Workflow Ageing"] = {
 			"fieldname": "doctype",
 			"label": "Doctype",
 			"fieldtype": "Select",
-			"options": ["Purchase Order", "Purchase Invoice", "Purchase Receipt", "Payment Entry", "Sales Order", "Sales Invoice", "Delivery Note"],
+			"options": ["Purchase Order", "Purchase Invoice", "Purchase Receipt", "Sales Order", "Sales Invoice", "Delivery Note"],
 			"reqd": 1,
 			// "get_query" : function(){
 			// 	return {
