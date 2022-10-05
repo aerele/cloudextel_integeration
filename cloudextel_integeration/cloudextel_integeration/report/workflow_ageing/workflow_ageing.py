@@ -48,7 +48,7 @@ def get_data(filters):
 					}
 		for age in filters.ages:
 			data_dict[status_map[i]+"_"+str(age)] = 0
-			if i == filters.ages[-1]:
+			if age == filters.ages[-1]:
 				data_dict[status_map[i]+"_above_"+str(age)] = 0
 		data.append(
 			data_dict
@@ -65,7 +65,7 @@ def get_data(filters):
 					}
 		for age in filters.ages:
 			data_dict[status_map[i]+"_"+str(age)] = 0
-			if i == filters.ages[-1]:
+			if age == filters.ages[-1]:
 				data_dict[status_map[i]+"_above_"+str(age)] = 0
 		data.append(
 			data_dict
