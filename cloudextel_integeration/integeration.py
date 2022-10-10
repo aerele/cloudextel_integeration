@@ -173,6 +173,50 @@ def create_sales_order(self, method):
 	}
 	make_api_call(url, payload, header, self.doctype)
 
+def create_material_request(self, method):
+	if not (self.material_request_type == "Customer Provided" and self.customer):
+		return
+	key = get_api_key()
+	url = get_url()
+	sales_order = frappe.db.get_value("Api Settings", "Api Settings", "sales_order")
+	if not sales_order:
+		frappe.throw("Add api supplier endpoint in {0}".format(frappe.utils.get_link_to_form(doctype="Api Settings", name="", label="Api Settings")))
+	url += sales_order
+	payload = frappe._dict({
+		  "key": key,
+		  "customer_code":self.customer ,
+		  "warehouse_booking_id": '',
+		  "erpnext_ref_id": self.name,
+		  "comment":"",
+		  "invoice_no":self.name,
+		  "invoice_date": str(self.transaction_date),
+		  "expected_delivery_date": str(self.schedule_date),
+		  "line_items": []
+		}
+	)
+	if self.set_warehouse:
+		warehouse_id = frappe.db.get_value("Warehouse", self.set_warehouse, 'odwen_warehouse_id')
+		if not warehouse_id:
+			frappe.throw("Set Odwen Warehouse Id for warehouse: {0}".format(self.set_warehouse))
+		payload["warehouse_booking_id"] = warehouse_id
+	else:
+		for i in self.items:
+			if i.warehouse:
+				warehouse_id = frappe.db.get_value("Warehouse", i.warehouse, 'odwen_warehouse_id')
+				if not warehouse_id:
+					frappe.throw("Set Odwen Warehouse Id for warehouse: {0}".format(i.warehouse))
+				payload["warehouse_booking_id"] = warehouse_id
+				break
+	for i in self.items:
+		payload.line_items.append({
+			"item_code": i.item_code,
+			"quantity": i.qty
+		})
+	header = {
+		"Content-Type":"application/json"
+	}
+	make_api_call(url, payload, header, self.doctype)
+
 def create_purchase_order(self, method):
 	key = get_api_key()
 	url = get_url()
@@ -290,7 +334,7 @@ def make_api_call(url, payloads, header, doctype=None):
 		new_doc.response = response.text
 		res = json.loads(response.text.strip())
 		if response.status_code == 200 and res["status"] == 1 and doctype:
-			order_no = res["odwen_so_number"] if doctype == "Sales Order" else res["odwen_po_number"]
+			order_no = res["odwen_so_number"] if doctype in ["Sales Order", "Material Request"] else res["odwen_po_number"]
 			frappe.db.set_value(doctype, payloads.erpnext_ref_id, "odwen_order_no", order_no)
 	except Exception as e:
 		frappe.msgprint(res['message'])

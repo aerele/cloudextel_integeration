@@ -106,6 +106,10 @@ doc_events = {
 		"on_submit": "cloudextel_integeration.integeration.create_sales_order",
 		"on_cancel": "cloudextel_integeration.integeration.cancel_sales_order"
 	},
+	"Material Request":{
+		"on_submit": "cloudextel_integeration.integeration.create_material_request",
+		"on_cancel": "cloudextel_integeration.integeration.cancel_sales_order"
+	},
 	"Purchase Order":{
 		"on_submit": "cloudextel_integeration.integeration.create_purchase_order",
 	},
