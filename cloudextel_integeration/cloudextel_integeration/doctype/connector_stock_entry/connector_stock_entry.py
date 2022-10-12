@@ -16,10 +16,11 @@ def create_stock_entry():
 @frappe.whitelist()
 def new_stock_entry(name):
 	cse = frappe.get_doc("Connector Stock Entry",name)
-	reference = frappe.db.get_value("Delivery Note", {"reference_no":cse.reference_no, "docstatus":1})
+	reference = frappe.db.get_value("Stock Entry", {"reference_no":cse.reference_no, "docstatus":1})
 	if reference:
 		frappe.throw("Reference No already exists")
-	frappe.db.sql("""update `tabConnector Delivery Note` set retry_limit=retry_limit-1 where name= %s """,(name))
+	frappe.db.sql("""update `tabConnector Stock Entry` set retry_limit=retry_limit-1 where name='%s' """,(name))
+	frappe.db.commit()
 	submit_se = frappe.db.get_value("Api Settings", "Api Settings", 'submit_delivery_note')
 	doc = frappe.new_doc("Stock Entry")
 	doc.company = cse.company
@@ -44,6 +45,7 @@ def new_stock_entry(name):
 		if submit_se == 'Yes':
 			doc.submit()
 		frappe.db.commit()
+		frappe.msgprint("Stock Entry Created: {0}".format(frappe.utils.get_link_to_form("Stock Entry", doc.name, doc.name)))
 		return True
 	except Exception as e:
 		frappe.errprint(e)
