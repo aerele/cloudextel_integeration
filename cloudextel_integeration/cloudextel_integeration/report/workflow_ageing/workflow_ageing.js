@@ -35,14 +35,12 @@ frappe.query_reports["Workflow Ageing"] = {
 			"label": "Cost Center",
 			"fieldtype": "Link",
 			"options": "Cost Center",
-			"reqd": 1
 		},
 		{
 			"fieldname": "telecom_circle",
 			"label": "Telecom Circle",
 			"fieldtype": "Link",
 			"options": "Telecom Circle",
-			"reqd": 1
 		},
 		{
 			"fieldname": "age1",
