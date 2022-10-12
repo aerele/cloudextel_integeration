@@ -140,8 +140,8 @@ def get_data(filters):
             cost_and_circle.append(i+['within_tat'])
             data_dict = {
                         "doctype": filters.doctype,
-                        "cost_center": "",
-                        "telecom_circle": "",
+                        "cost_center": i[0],
+                        "telecom_circle": i[1],
                         "category": "Within TAT",
                         "no_of_docs": 0,
                         "avg_days": 0
@@ -163,9 +163,8 @@ def get_data(filters):
             cost_and_circle.append(i+['outside_tat'])
             data_dict = {
                             "doctype": filters.doctype,
-                            "workflow_state": i,
-                            "cost_center": "",
-                            "telecom_circle": "",
+                            "cost_center": i[0],
+                            "telecom_circle": i[1],
                             "category": "Outside TAT",
                             "no_of_docs": 0,
                             "avg_days": 0
