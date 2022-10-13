@@ -19,7 +19,7 @@ def new_stock_entry(name):
 	reference = frappe.db.get_value("Stock Entry", {"reference_no":cse.reference_no, "docstatus":1})
 	if reference:
 		frappe.throw("Reference No already exists")
-	frappe.db.sql("""update `tabConnector Stock Entry` set retry_limit=retry_limit-1 where name='%s' """,(name))
+	frappe.db.sql("""update `tabConnector Stock Entry` set retry_limit=retry_limit-1 where name='{0}' """.format(name))
 	frappe.db.commit()
 	submit_se = frappe.db.get_value("Api Settings", "Api Settings", 'submit_delivery_note')
 	doc = frappe.new_doc("Stock Entry")
@@ -40,7 +40,7 @@ def new_stock_entry(name):
 	doc.items = get_items(cse, doc.from_warehouse, doc.to_warehouse)
 	try:
 		doc.save(ignore_permissions=True)
-		frappe.db.sql("""update `tabConnector Stock Entry` set is_synced= 1, status='Synced' where name= %s""",(cse.name))
+		frappe.db.sql("""update `tabConnector Stock Entry` set is_synced= 1, status='Synced' where name='{0}'""".format(cse.name))
 		frappe.db.commit()
 		if submit_se == 'Yes':
 			doc.submit()

@@ -25,7 +25,7 @@ def new_purchasereceipt(purchase_receipt_id):
 	reference = frappe.db.get_value("Purchase Receipt", {"reference_no":pr_doc.reference_no, "docstatus":1})
 	if reference:
 		frappe.throw("Reference No already exists")
-	frappe.db.sql("""update `tabConnector Purchase Receipt` set retry_limit=retry_limit-1 where name='%s' """,(purchase_receipt_id))
+	frappe.db.sql("""update `tabConnector Purchase Receipt` set retry_limit=retry_limit-1 where name='{0}' """.format(purchase_receipt_id))
 	frappe.db.commit()
 	submit_pr = frappe.db.get_value("Api Settings", "Api Settings", 'submit_delivery_note')
 	purchase_receipt=make_purchase_receipt(pr_doc.purchase_order_no)
@@ -48,7 +48,7 @@ def new_purchasereceipt(purchase_receipt_id):
 	purchase_receipt.rejected_warehouse = purchase_receipt.set_warehouse
 	try:
 		purchase_receipt.save(ignore_permissions=True)
-		frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1, status='Synced' where name= %s""",(pr_doc.name))
+		frappe.db.sql("""update `tabConnector Purchase Receipt` set is_synced= 1, status='Synced' where name='{0}'""".format(pr_doc.name))
 		frappe.db.commit()
 		if submit_pr == 'Yes':
 			purchase_receipt.submit()
