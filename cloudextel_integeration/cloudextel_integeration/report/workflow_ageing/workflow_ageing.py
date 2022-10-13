@@ -202,8 +202,8 @@ def get_data(filters):
             elif age > filters.tat_limit:
                 idx = cost_and_circle.index([doc.cost_center, doc.telecom_circle, "outside_tat"])
             role = status_map[doc.workflow_state]
-            data[idx][role+"_no_of_docs"] += 1
-            data[idx][role+"_avg_days"] = ((data[idx][role+"_avg_days"] + age) // 2) if data[idx][role+"_avg_days"]!=0 else age
+            data[idx]["no_of_docs"] += 1
+            data[idx]["avg_days"] = ((data[idx][role+"_avg_days"] + age) // 2) if data[idx][role+"_avg_days"]!=0 else age
             if filters.ages[0] > age:
                 data[idx][status_map[doc.workflow_state]+"_"+str(filters.ages[0])] += 1
             elif filters.ages[1] > age:
