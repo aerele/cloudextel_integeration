@@ -36,6 +36,10 @@ def make_custom_fields():
 		custom_fields["Purchase Order"].append(dict(fieldname='odwen_order_no', label='Odwen Order No',
 						fieldtype='Data', insert_after='tax_withholding_category'))
 
+	if not frappe.get_meta("Purchase Order").get_field("is_stock_transfer"):
+		custom_fields["Purchase Order"].append(dict(fieldname='is_stock_transfer', label='Is Stock Transfer',
+						fieldtype='Check', insert_after='odwen_order_no'))
+
 	if not frappe.get_meta("Purchase Receipt").get_field("reference_no"):
 		custom_fields["Purchase Receipt"].append(dict(fieldname='reference_no', label='Reference No',
 						fieldtype='Data', insert_after='supplier_delivery_note'))

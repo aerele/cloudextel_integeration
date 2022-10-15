@@ -14,6 +14,9 @@ def get_url():
 	return url
 
 def supplier(self, method):
+	if self.is_odwen_customer:
+		odwen_customer(self)
+		return
 	key = get_api_key()
 	url = get_url()
 	supplier_path = frappe.db.get_value("Api Settings", "Api Settings", "supplier")
@@ -58,6 +61,65 @@ def supplier(self, method):
 
 	make_api_call(url, payload, header)
 
+def odwen_customer(self):
+	key = get_api_key()
+	url = get_url()
+	customer_path = frappe.db.get_value("Api Settings", "Api Settings", "customer")
+	if not customer_path:
+		frappe.throw("Add api customer endpoint in {0}".format(frappe.utils.get_link_to_form(doctype="Api Settings", name="", label="Api Settings")))
+	url += customer_path
+	payload = frappe._dict(
+		{
+			"key": key,
+			"customer_code": self.name,
+			"customer_name":self.customer_name,
+			"email": "",
+			"phone_number": "",
+			"gst_number": "",
+			"shipping_address1": "",
+			"shipping_address2": "",
+			"shipping_state": "",
+			"shipping_city": "",
+			"shipping_postalcode": "",
+			"billing_address1":"",
+			"billing_address2":"",
+			"billing_state":"",
+			"billing_city":"",
+			"billing_postalcode":""
+		}
+	)
+	header = {
+		"Content-Type":"application/json"
+	}
+	if self.supplier_primary_contact:
+		contact = frappe.get_doc("Contact", self.supplier_primary_contact)
+		for i in contact.email_ids:
+			if  i.is_primary:
+				payload.email = i.email_id
+				break
+		for i in contact.phone_nos:
+			if i.is_primary_mobile_no:
+				payload.phone_number = i.phone
+				break
+	shipping_address = frappe.db.sql(""" select distinct ad.name from `tabAddress` as ad join `tabDynamic Link` as dl on dl.parent=ad.name where dl.link_doctype='Supplier' and dl.link_name='{0}' order by ad.modified desc""".format(self.name))
+
+	if shipping_address and len(shipping_address):
+		ship_address = frappe.get_doc("Address", shipping_address[0][0])
+		payload.gst_number = ship_address.gstin
+		payload.shipping_address1 = ship_address.address_line1
+		payload.shipping_address2 = ship_address.address_line2
+		payload.shipping_state = ship_address.state
+		payload.shipping_city = ship_address.city
+		payload.shipping_postalcode = ship_address.pincode
+
+		payload.gst_number = ship_address.gstin or ship_address.gstin
+		payload.billing_address1 = ship_address.address_line1
+		payload.billing_address2 = ship_address.address_line2
+		payload.billing_state = ship_address.state
+		payload.billing_city = ship_address.city
+		payload.billing_postalcode = ship_address.pincode
+
+	make_api_call(url, payload, header)
 
 def customer(self, method):
 	key = get_api_key()
@@ -142,6 +204,7 @@ def create_sales_order(self, method):
 		  "key": key,
 		  "customer_code":self.customer ,
 		  "warehouse_booking_id": '',
+		  "order_type":1,
 		  "erpnext_ref_id": self.name,
 		  "comment":"",
 		  "invoice_no":self.name,
@@ -186,6 +249,7 @@ def create_material_request(self, method):
 		  "key": key,
 		  "customer_code":self.customer ,
 		  "warehouse_booking_id": '',
+		  "order_type":1,
 		  "erpnext_ref_id": self.name,
 		  "comment":"",
 		  "invoice_no":self.name,
@@ -229,6 +293,7 @@ def create_purchase_order(self, method):
 	  "vendor_code": self.supplier,
 	  "warehouse_booking_id": '',
 	  "erpnext_ref_id": self.name,
+	  "order_type":1 if not self.is_stock_transfer else 2,
 	  "comment":"",
 	  "invoice_no": self.name,
 	  "invoice_date": str(self.transaction_date),
